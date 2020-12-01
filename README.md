@@ -1,3 +1,5 @@
+![Gradle](https://github.com/mickaelpham/advent-of-code-2020/workflows/Gradle/badge.svg)
+
 # Advent of Code 2020
 
 Practicing Java with the [Advent of Code 2020](https://adventofcode.com/2020/)
