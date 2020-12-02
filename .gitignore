@@ -6,3 +6,4 @@ build
 
 # Add JAR to Git
 !gradle-wrapper.jar
+.idea/
