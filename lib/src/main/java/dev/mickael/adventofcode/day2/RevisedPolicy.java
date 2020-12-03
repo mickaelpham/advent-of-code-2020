@@ -17,7 +17,7 @@ public class RevisedPolicy {
     // pick up the last character as the letter
     var letter = input.charAt(length - 1);
 
-    // trim the last two characters, then split by `-` to get the min/max count
+    // trim the last two characters, then split by `-` to get the positions
     var positions =
         Arrays.stream(input.substring(0, length - 2).split("-"))
             .mapToInt(Integer::parseInt)
