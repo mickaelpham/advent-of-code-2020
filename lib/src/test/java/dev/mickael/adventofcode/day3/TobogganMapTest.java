@@ -57,18 +57,9 @@ public class TobogganMapTest {
             .toArray(char[][]::new);
 
     var map = TobogganMap.builder().visibleGrid(input).build();
+    var slope = Slope.builder().row(1).col(3).build();
 
-    int row = 0, col = 0, numTrees = 0;
-    while (!map.isLastRow(row)) {
-      row += 1;
-      col += 3;
-
-      if (map.squareAt(row, col) == Square.TREE) {
-        numTrees++;
-      }
-    }
-
-    assertEquals(7, numTrees);
+    assertEquals(7, map.treesEncountered(slope));
   }
 
   @Test
@@ -82,18 +73,10 @@ public class TobogganMapTest {
             .toArray(char[][]::new);
 
     var map = TobogganMap.builder().visibleGrid(input).build();
+    var slope = Slope.builder().row(1).col(3).build();
+    var numTrees = map.treesEncountered(slope);
 
-    int row = 0, col = 0, numTrees = 0;
-    while (!map.isLastRow(row)) {
-      row += 1;
-      col += 3;
-
-      if (map.squareAt(row, col) == Square.TREE) {
-        numTrees++;
-      }
-    }
-
-    assertEquals(row, input.length - 1);
+    assertEquals(228, numTrees);
     System.out.println("encountered " + numTrees + " trees on the way down");
   }
 }

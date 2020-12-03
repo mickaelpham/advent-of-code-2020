@@ -14,7 +14,32 @@ public class TobogganMap {
   private final char[][] visibleGrid;
 
   /**
-   * Used to indicate that we reached the bottom of the map
+   * Go down the map using the given slope (down by X rows, right by Y columns)
+   *
+   * @param slope Slope to follow
+   * @return number of trees encountered
+   */
+  public int treesEncountered(Slope slope) {
+    int row = 0, col = 0, numTrees = 0;
+
+    while (!atBottom(row)) {
+      if (squareAt(row, col) == Square.TREE) {
+        numTrees++;
+      }
+
+      row += slope.getRow();
+      col += slope.getCol();
+    }
+
+    return numTrees;
+  }
+
+  private boolean atBottom(int row) {
+    return row >= visibleGrid.length;
+  }
+
+  /**
+   * Used to indicate that we reached the bottom of the map (or past it)
    *
    * @param row Current row position
    * @return true if we reached the end, false otherwise
