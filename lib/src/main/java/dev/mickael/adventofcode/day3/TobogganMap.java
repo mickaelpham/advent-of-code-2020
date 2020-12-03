@@ -34,20 +34,6 @@ public class TobogganMap {
     return numTrees;
   }
 
-  private boolean atBottom(int row) {
-    return row >= visibleGrid.length;
-  }
-
-  /**
-   * Used to indicate that we reached the bottom of the map (or past it)
-   *
-   * @param row Current row position
-   * @return true if we reached the end, false otherwise
-   */
-  public boolean isLastRow(int row) {
-    return (visibleGrid.length - 1) == row;
-  }
-
   /**
    * Indicates what's on the grid at the given position (row, col). The `row` must be within the
    * grid length, but the `col` can go over, since the grid repeats itself horizontally.
@@ -60,6 +46,10 @@ public class TobogganMap {
     int visibleCol = col % visibleGrid[0].length;
 
     return MARKS.get(visibleGrid[row][visibleCol]);
+  }
+
+  private boolean atBottom(int row) {
+    return row >= visibleGrid.length;
   }
 
   public enum Square {

@@ -5,9 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import dev.mickael.adventofcode.day3.TobogganMap.Square;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 public class TobogganMapTest {
@@ -78,5 +80,34 @@ public class TobogganMapTest {
 
     assertEquals(228, numTrees);
     System.out.println("encountered " + numTrees + " trees on the way down");
+  }
+
+  @Test
+  void testMultipleSlopes() throws URISyntaxException, IOException {
+    var inputPath = getClass().getClassLoader().getResource("day-3-input.txt");
+    assertNotNull(inputPath);
+
+    var input =
+        Files.readAllLines(Path.of(inputPath.toURI())).stream()
+            .map(String::toCharArray)
+            .toArray(char[][]::new);
+
+    var tobogganMap = TobogganMap.builder().visibleGrid(input).build();
+    var slopes =
+        List.of(
+            Slope.builder().row(1).col(1).build(),
+            Slope.builder().row(1).col(3).build(),
+            Slope.builder().row(1).col(5).build(),
+            Slope.builder().row(1).col(7).build(),
+            Slope.builder().row(2).col(1).build());
+
+    var numTrees =
+        slopes.stream()
+            .map(tobogganMap::treesEncountered)
+            .map(BigInteger::valueOf)
+            .reduce(BigInteger.ONE, BigInteger::multiply);
+
+    assertEquals(BigInteger.valueOf(6818112000L), numTrees);
+    System.out.println("encountered " + numTrees + " trees across all slopes");
   }
 }
