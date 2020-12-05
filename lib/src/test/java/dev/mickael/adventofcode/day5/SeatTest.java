@@ -63,4 +63,32 @@ public class SeatTest {
     assertEquals(989, result);
     System.out.println("the highest seat ID is " + result);
   }
+
+  @Test
+  void findMySeatAsMissingFromInput() throws URISyntaxException, IOException {
+    var inputPath = getClass().getClassLoader().getResource("day-5-input.txt");
+    assertNotNull(inputPath);
+
+    var sortedSeatIDs =
+        Files.readAllLines(Path.of(inputPath.toURI())).stream()
+            .map(Seat::fromString)
+            .mapToInt(Seat::getID)
+            .sorted()
+            .toArray();
+
+    // find the missing seat in the array
+    // TODO improve runtime to O(log n) instead of O(n)
+    int expected = sortedSeatIDs[0];
+    int mySeat = -1;
+    for (int val : sortedSeatIDs) {
+      if (expected != val) {
+        mySeat = val - 1;
+        break;
+      }
+      expected++;
+    }
+
+    assertEquals(548, mySeat);
+    System.out.println("my seat ID is " + mySeat);
+  }
 }
