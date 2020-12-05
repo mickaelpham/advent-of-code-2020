@@ -69,24 +69,18 @@ public class SeatTest {
     var inputPath = getClass().getClassLoader().getResource("day-5-input.txt");
     assertNotNull(inputPath);
 
-    var sortedSeatIDs =
+    // Single processing of an IntStream
+    // source: https://stackoverflow.com/a/39487571
+    var stats =
         Files.readAllLines(Path.of(inputPath.toURI())).stream()
             .map(Seat::fromString)
             .mapToInt(Seat::getID)
-            .sorted()
-            .toArray();
+            .summaryStatistics();
 
-    // find the missing seat in the array
-    // TODO improve runtime to O(log n) instead of O(n)
-    int expected = sortedSeatIDs[0];
-    int mySeat = -1;
-    for (int val : sortedSeatIDs) {
-      if (expected != val) {
-        mySeat = val - 1;
-        break;
-      }
-      expected++;
-    }
+    // find the missing seat in the array by comparing the expected sum with the actual
+    // source: https://www.geeksforgeeks.org/find-the-missing-number/
+    var expected = (stats.getCount() + 1) * (stats.getMax() + stats.getMin()) / 2;
+    var mySeat = expected - stats.getSum();
 
     assertEquals(548, mySeat);
     System.out.println("my seat ID is " + mySeat);
