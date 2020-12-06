@@ -1,9 +1,10 @@
 package dev.mickael.adventofcode.day6;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,24 +15,21 @@ public class RevisedCustomsGroup {
   private Set<Character> yesAnswers;
 
   public static RevisedCustomsGroup fromString(String input) {
-    Map<Character, Integer> frequencyMap = new HashMap<>();
-    Set<Character> yesAnswers = new HashSet<>();
-    int numPeople = 0;
+    var frequencyMap =
+        input
+            .chars()
+            .mapToObj(chr -> (char) chr)
+            .collect(
+                Collectors.groupingBy(Function.identity(), HashMap::new, Collectors.counting()));
 
-    for (var c : input.toCharArray()) {
-      if (c == '\n') {
-        numPeople++;
-        continue;
-      }
+    // Variable used in lambda should be final or effectively final
+    final var numPeople = frequencyMap.remove('\n');
 
-      frequencyMap.put(c, frequencyMap.getOrDefault(c, 0) + 1);
-    }
-
-    for (var entry : frequencyMap.entrySet()) {
-      if (entry.getValue() == numPeople) {
-        yesAnswers.add(entry.getKey());
-      }
-    }
+    var yesAnswers =
+        frequencyMap.entrySet().stream()
+            .filter(entry -> entry.getValue().equals(numPeople))
+            .map(Entry::getKey)
+            .collect(Collectors.toSet());
 
     return builder().yesAnswers(yesAnswers).build();
   }

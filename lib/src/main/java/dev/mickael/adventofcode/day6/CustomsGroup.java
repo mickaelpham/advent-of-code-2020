@@ -1,7 +1,7 @@
 package dev.mickael.adventofcode.day6;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,13 +12,12 @@ public class CustomsGroup {
   private Set<Character> yesAnswers;
 
   public static CustomsGroup fromString(String input) {
-    Set<Character> yesAnswers = new HashSet<>();
-
-    for (var c : input.toCharArray()) {
-      if (c == '\n') continue;
-
-      yesAnswers.add(c);
-    }
+    var yesAnswers =
+        input
+            .chars()
+            .mapToObj(chr -> (char) chr)
+            .filter(chr -> chr != '\n')
+            .collect(Collectors.toSet());
 
     return builder().yesAnswers(yesAnswers).build();
   }
