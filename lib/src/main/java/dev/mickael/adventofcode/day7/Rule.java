@@ -21,7 +21,7 @@ public class Rule {
   public static Rule fromString(String input) {
     var outerMatcher = OUTER_COLOR.matcher(input);
     var foundOuterBagColor = outerMatcher.find();
-    assert foundOuterBagColor;
+    assert foundOuterBagColor : "could not find outer bag color for input \"" + input + "\"";
     var outerBagColor = outerMatcher.group("color");
 
     var innerBags = new HashMap<String, Integer>();
