@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
@@ -34,6 +35,23 @@ public class BagTest {
       }
     }
 
-    assertEquals(8, bags.get("shiny gold").getContainedBy().size());
+    var shinyGold = bags.get("shiny gold");
+    assertEquals(8, shinyGold.getContainedBy().size());
+
+    var outerBags = shinyGold.getContainedBy();
+    var bagsToCheck = new ArrayDeque<>(outerBags);
+
+    while (!bagsToCheck.isEmpty()) {
+      var curr = bagsToCheck.removeFirst();
+
+      for (var c : bags.getOrDefault(curr, Bag.builder().build()).getContainedBy()) {
+        if (!outerBags.contains(c)) {
+          outerBags.add(c);
+          bagsToCheck.add(c);
+        }
+      }
+    }
+
+    assertEquals(185, outerBags.size());
   }
 }
