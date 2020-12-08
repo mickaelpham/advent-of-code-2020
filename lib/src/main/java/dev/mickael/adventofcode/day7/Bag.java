@@ -15,5 +15,13 @@ public class Bag {
 
   @Builder.Default private final Set<String> containedBy = new HashSet<>();
 
+  public boolean isContainedBy(String color) {
+    return containedBy.contains(color);
+  }
+
   @Builder.Default private final Map<String, Integer> contains = new HashMap<>();
+
+  public static Bag fromRule(Rule rule) {
+    return builder().color(rule.getOuterBagColor()).contains(rule.getInnerBags()).build();
+  }
 }
