@@ -66,7 +66,7 @@ public class RuleMap {
   public int totalInnerBags(String color) {
     int result = 0;
 
-    // Breadth-First Approach
+    // Breadth-First Approach, initialize the queue with the current bag we are starting from
     var bagsToCheck = new ArrayDeque<>(List.of(BagCount.builder().color(color).count(1).build()));
 
     while (!bagsToCheck.isEmpty()) {
@@ -77,8 +77,9 @@ public class RuleMap {
       get(curr.color)
           .getContains()
           .forEach(
-              (key, value) ->
-                  bagsToCheck.add(BagCount.builder().color(key).count(value * curr.count).build()));
+              (innerColor, innerCount) ->
+                  bagsToCheck.add(
+                      BagCount.builder().color(innerColor).count(innerCount * curr.count).build()));
     }
 
     // We do not count the outer-most bag we started from
