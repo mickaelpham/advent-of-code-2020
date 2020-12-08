@@ -1,9 +1,13 @@
 package dev.mickael.adventofcode.day7;
 
+import java.util.ArrayDeque;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -36,5 +40,26 @@ public class RuleMap {
 
   public Bag get(String color) {
     return bags.get(color);
+  }
+
+  public Set<String> outerBagsContaining(String color) {
+    var result = new HashSet<String>();
+
+    // Breadth-First Approach
+    var bagsToCheck = new ArrayDeque<>(List.of(color));
+
+    while (!bagsToCheck.isEmpty()) {
+      var bag = get(bagsToCheck.removeFirst());
+
+      bag.getContainedBy().stream()
+          .filter(Predicate.not(result::contains))
+          .forEach(
+              outerBagColor -> {
+                bagsToCheck.add(outerBagColor);
+                result.add(outerBagColor);
+              });
+    }
+
+    return result;
   }
 }
