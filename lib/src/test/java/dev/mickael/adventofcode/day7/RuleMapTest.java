@@ -8,64 +8,54 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
 public class RuleMapTest {
 
-  @Test
-  void testWithExampleFile() throws URISyntaxException, IOException {
-    var inputPath = getClass().getClassLoader().getResource("day-7-example.txt");
-    assertNotNull(inputPath);
+  private static final String EXAMPLE_FILENAME = "day-7-example.txt";
+  private static final String INPUT_FILENAME = "day-7-input.txt";
+  private static final String SHINY_GOLD = "shiny gold";
 
-    var rules =
-        Files.readAllLines(Path.of(inputPath.toURI())).stream()
-            .map(Rule::fromString)
-            .collect(Collectors.toList());
+  private static RuleMap loadRules(String filename) {
+    var inputPath = RuleMapTest.class.getClassLoader().getResource(filename);
+    assertNotNull(inputPath, "could not load resource: " + filename);
 
-    var map = RuleMap.fromRules(rules);
-    assertTrue(map.get("dark blue").isContainedBy("dark green"));
+    List<Rule> rules = null;
+    try {
+      rules =
+          Files.readAllLines(Path.of(inputPath.toURI())).stream()
+              .map(Rule::fromString)
+              .collect(Collectors.toList());
+    } catch (IOException | URISyntaxException ignored) {
+    }
+    assertNotNull(rules, "could not load parse rules file");
+
+    return RuleMap.fromRules(rules);
   }
 
   @Test
-  void testOuterBagsFromInputFile() throws URISyntaxException, IOException {
-    var inputPath = getClass().getClassLoader().getResource("day-7-input.txt");
-    assertNotNull(inputPath);
-
-    var rules =
-        Files.readAllLines(Path.of(inputPath.toURI())).stream()
-            .map(Rule::fromString)
-            .collect(Collectors.toList());
-
-    var map = RuleMap.fromRules(rules);
-    assertEquals(185, map.outerBagsContaining("shiny gold").size());
+  void testWithExampleFile() {
+    var rules = loadRules(EXAMPLE_FILENAME);
+    assertTrue(rules.get("dark blue").isContainedBy("dark green"));
   }
 
   @Test
-  void testInnerBagsWithExampleFile() throws URISyntaxException, IOException {
-    var inputPath = getClass().getClassLoader().getResource("day-7-example.txt");
-    assertNotNull(inputPath);
-
-    var rules =
-        Files.readAllLines(Path.of(inputPath.toURI())).stream()
-            .map(Rule::fromString)
-            .collect(Collectors.toList());
-
-    var map = RuleMap.fromRules(rules);
-    assertEquals(126, map.totalInnerBags("shiny gold"));
+  void testOuterBagsFromInputFile() {
+    var rules = loadRules(INPUT_FILENAME);
+    assertEquals(185, rules.outerBagsContaining(SHINY_GOLD).size());
   }
 
   @Test
-  void testInnerBagsWithInputFile() throws URISyntaxException, IOException {
-    var inputPath = getClass().getClassLoader().getResource("day-7-input.txt");
-    assertNotNull(inputPath);
+  void testInnerBagsWithExampleFile() {
+    var rules = loadRules(EXAMPLE_FILENAME);
+    assertEquals(126, rules.totalInnerBags(SHINY_GOLD));
+  }
 
-    var rules =
-        Files.readAllLines(Path.of(inputPath.toURI())).stream()
-            .map(Rule::fromString)
-            .collect(Collectors.toList());
-
-    var map = RuleMap.fromRules(rules);
-    assertEquals(89084, map.totalInnerBags("shiny gold"));
+  @Test
+  void testInnerBagsWithInputFile() {
+    var rules = loadRules(INPUT_FILENAME);
+    assertEquals(89084, rules.totalInnerBags(SHINY_GOLD));
   }
 }
