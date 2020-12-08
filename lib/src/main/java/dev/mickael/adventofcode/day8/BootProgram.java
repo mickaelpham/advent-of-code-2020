@@ -25,6 +25,21 @@ public class BootProgram {
 
   @Builder.Default private int debugLine = -1;
 
+  /**
+   * Start a debugging session from the current cursor. Preserves the internal state (accumulator
+   * and previously executed lines) before executing the program until we either:
+   *
+   * <ol>
+   *   <li>enter an infinite loop
+   *   <li>reach the end of the program
+   * </ol>
+   *
+   * <p>If we enter an infinite loop, restore the internal state before exiting, otherwise preserve
+   * the current state value.
+   *
+   * @param cursor Line to debug from (= swap the instruction at this line)
+   * @return -1 if we entered an infinite loop in this debug session
+   */
   public int debugFrom(int cursor) {
     debugLine = cursor;
     int accumulatorCopy = accumulator;
@@ -48,12 +63,20 @@ public class BootProgram {
     return cursor;
   }
 
+  /**
+   * Execute one line of the program at the given cursor. Modifies the accumulator state if the
+   * instruction tells us so.
+   *
+   * @param lineAt Cursor position to execute
+   * @return next line to execute, or -1 if we detect an infinite loops
+   */
   public int exec(int lineAt) {
     if (previouslyExecuted.contains(lineAt)) return -1;
     previouslyExecuted.add(lineAt);
 
     var m = INSTRUCTION.matcher(lines.get(lineAt));
-    assert m.matches();
+    var isValidLine = m.matches();
+    assert isValidLine : "invalid instruction at line " + lineAt;
 
     var op = m.group("op");
 
