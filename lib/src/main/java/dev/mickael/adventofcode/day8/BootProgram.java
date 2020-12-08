@@ -5,10 +5,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 import lombok.Builder;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
-@Data
 @Builder
+@ToString
+@EqualsAndHashCode
 public class BootProgram {
 
   private static final Pattern INSTRUCTION =
@@ -18,7 +21,32 @@ public class BootProgram {
 
   @Builder.Default private final Set<Integer> previouslyExecuted = new HashSet<>();
 
-  private int accumulator;
+  @Getter private int accumulator;
+
+  @Builder.Default private int debugLine = -1;
+
+  public int debugFrom(int cursor) {
+    debugLine = cursor;
+    int accumulatorCopy = accumulator;
+    var previouslyExecutedCopy = Set.copyOf(previouslyExecuted);
+
+    while (cursor != -1 && cursor < lines.size()) {
+      cursor = exec(cursor);
+    }
+
+    // Don't forget to restore the state of the program before exiting debug mode
+    // if we ended up in an infinite loop
+    if (cursor == -1) {
+      accumulator = accumulatorCopy;
+
+      previouslyExecuted.clear();
+      previouslyExecuted.addAll(previouslyExecutedCopy);
+
+      debugLine = -1;
+    }
+
+    return cursor;
+  }
 
   public int exec(int lineAt) {
     if (previouslyExecuted.contains(lineAt)) return -1;
@@ -28,6 +56,16 @@ public class BootProgram {
     assert m.matches();
 
     var op = m.group("op");
+
+    // DEBUG MODE: swap the operation if cursor is at debug line
+    if (debugLine == lineAt) {
+      if (op.equals("nop")) {
+        op = "jmp";
+      } else if (op.equals("jmp")) {
+        op = "nop";
+      }
+    }
+
     int arg = Integer.parseInt(m.group("arg"));
 
     int nextLine = -1;
