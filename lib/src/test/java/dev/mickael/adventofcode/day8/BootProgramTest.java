@@ -56,7 +56,6 @@ public class BootProgramTest {
       cursor = program.exec(cursor);
     }
 
-    program.debugFrom(0);
     assertEquals(8, program.getAccumulator());
   }
 
@@ -73,7 +72,6 @@ public class BootProgramTest {
       cursor = program.exec(cursor);
     }
 
-    program.debugFrom(0);
     assertEquals(1056, program.getAccumulator());
   }
 }
