@@ -62,4 +62,32 @@ public class RuleMap {
 
     return result;
   }
+
+  public int totalInnerBags(String color) {
+    int result = 0;
+
+    // Breadth-First Approach
+    var bagsToCheck = new ArrayDeque<>(List.of(BagCount.builder().color(color).count(1).build()));
+
+    while (!bagsToCheck.isEmpty()) {
+      var curr = bagsToCheck.removeFirst();
+      result += curr.count;
+
+      // Add all inner bags to the queue, with their current count
+      get(curr.color)
+          .getContains()
+          .forEach(
+              (key, value) ->
+                  bagsToCheck.add(BagCount.builder().color(key).count(value * curr.count).build()));
+    }
+
+    // We do not count the outer-most bag we started from
+    return result - 1;
+  }
+
+  @Builder
+  private static class BagCount {
+    int count;
+    String color;
+  }
 }

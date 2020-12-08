@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 public class RuleMapTest {
 
   @Test
-  void testWithExampleInputFile() throws URISyntaxException, IOException {
+  void testWithExampleFile() throws URISyntaxException, IOException {
     var inputPath = getClass().getClassLoader().getResource("day-7-example.txt");
     assertNotNull(inputPath);
 
@@ -39,5 +39,33 @@ public class RuleMapTest {
 
     var map = RuleMap.fromRules(rules);
     assertEquals(185, map.outerBagsContaining("shiny gold").size());
+  }
+
+  @Test
+  void testInnerBagsWithExampleFile() throws URISyntaxException, IOException {
+    var inputPath = getClass().getClassLoader().getResource("day-7-example.txt");
+    assertNotNull(inputPath);
+
+    var rules =
+        Files.readAllLines(Path.of(inputPath.toURI())).stream()
+            .map(Rule::fromString)
+            .collect(Collectors.toList());
+
+    var map = RuleMap.fromRules(rules);
+    assertEquals(126, map.totalInnerBags("shiny gold"));
+  }
+
+  @Test
+  void testInnerBagsWithInputFile() throws URISyntaxException, IOException {
+    var inputPath = getClass().getClassLoader().getResource("day-7-input.txt");
+    assertNotNull(inputPath);
+
+    var rules =
+        Files.readAllLines(Path.of(inputPath.toURI())).stream()
+            .map(Rule::fromString)
+            .collect(Collectors.toList());
+
+    var map = RuleMap.fromRules(rules);
+    assertEquals(89084, map.totalInnerBags("shiny gold"));
   }
 }
