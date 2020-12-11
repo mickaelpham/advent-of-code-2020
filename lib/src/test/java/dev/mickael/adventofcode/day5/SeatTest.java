@@ -9,8 +9,10 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
+@Slf4j
 public class SeatTest {
 
   @Test
@@ -61,7 +63,7 @@ public class SeatTest {
             .orElse(0);
 
     assertEquals(989, result);
-    System.out.println("the highest seat ID is " + result);
+    log.info("the highest seat ID is {}", result);
   }
 
   @Test
@@ -83,6 +85,6 @@ public class SeatTest {
     var mySeat = expected - stats.getSum();
 
     assertEquals(548, mySeat);
-    System.out.println("my seat ID is " + mySeat);
+    log.info("my seat ID is {}", mySeat);
   }
 }
