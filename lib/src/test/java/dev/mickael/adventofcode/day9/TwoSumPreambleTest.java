@@ -109,7 +109,7 @@ public class TwoSumPreambleTest {
       }
     }
 
-    System.out.println("found the array at " + left + ", " + right);
+    log.info("found the array at {}, {}", left, right);
     var result = Arrays.copyOfRange(nums, left, right + 1);
 
     long min = Long.MAX_VALUE;
@@ -128,7 +128,7 @@ public class TwoSumPreambleTest {
     }
 
     long sum = min + max;
-    System.out.println("min = " + min + ", max = " + max + ", sum = " + sum);
+    log.info("min = {}, max = {}, sum = {}", min, max, sum);
     assertEquals(183278487, sum);
   }
 }
