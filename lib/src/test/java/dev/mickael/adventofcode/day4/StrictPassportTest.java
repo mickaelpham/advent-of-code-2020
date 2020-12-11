@@ -11,8 +11,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
+@Slf4j
 public class StrictPassportTest {
   @Test
   void testExampleInputFile() throws URISyntaxException, IOException {
@@ -43,6 +45,7 @@ public class StrictPassportTest {
     List<StrictPassport> validPassports =
         passports.stream().filter(StrictPassport::isValid).collect(Collectors.toList());
     assertEquals(4, validPassports.size());
+    log.info("there are {} valid passports (strict validation)", validPassports.size());
   }
 
   @Test
@@ -72,7 +75,6 @@ public class StrictPassportTest {
     List<StrictPassport> validPassports =
         passports.stream().filter(StrictPassport::isValid).collect(Collectors.toList());
     assertEquals(156, validPassports.size());
-    System.out.println(
-        "there are " + validPassports.size() + " valid passports (strict validation)");
+    log.info("there are {} valid passports (strict validation)", validPassports.size());
   }
 }

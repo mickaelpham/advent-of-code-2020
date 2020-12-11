@@ -12,8 +12,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
+@Slf4j
 public class PassportTest {
 
   @Test
@@ -59,11 +61,11 @@ public class PassportTest {
     }
 
     assertEquals(4, passports.size());
-    System.out.println(passports);
 
     List<Passport> validPassports =
         passports.stream().filter(Passport::isValid).collect(Collectors.toList());
     assertEquals(2, validPassports.size());
+    log.info("there are {} valid passports", validPassports.size());
   }
 
   @Test
@@ -93,6 +95,6 @@ public class PassportTest {
     List<Passport> validPassports =
         passports.stream().filter(Passport::isValid).collect(Collectors.toList());
     assertEquals(230, validPassports.size());
-    System.out.println("there are " + validPassports.size() + " valid passports");
+    log.info("there are {} valid passports", validPassports.size());
   }
 }
