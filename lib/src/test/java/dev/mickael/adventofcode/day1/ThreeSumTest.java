@@ -9,8 +9,10 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
+@Slf4j
 public class ThreeSumTest {
 
   @Test
@@ -36,14 +38,9 @@ public class ThreeSumTest {
 
     var result = ThreeSum.exec(input, target);
     assertEquals(target, Arrays.stream(result).sum());
-    System.out.println(result[0] + " + " + result[1] + " + " + result[2] + " = " + target);
-    System.out.println(
-        result[0]
-            + " * "
-            + result[1]
-            + " * "
-            + result[2]
-            + " = "
-            + (result[0] * result[1] * result[2]));
+    log.info("{} + {} + {} = {}", result[0], result[1], result[2], target);
+
+    var product = Arrays.stream(result).reduce(1, (curr, acc) -> curr * acc);
+    log.info("{} * {} * {} = {}", result[0], result[1], result[2], product);
   }
 }

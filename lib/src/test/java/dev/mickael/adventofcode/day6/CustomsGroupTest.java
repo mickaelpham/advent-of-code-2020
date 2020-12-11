@@ -11,8 +11,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
+@Slf4j
 public class CustomsGroupTest {
 
   @Test
@@ -46,6 +48,6 @@ public class CustomsGroupTest {
             .reduce(0, Integer::sum);
 
     assertEquals(6947, numYesQuestions);
-    System.out.println("initially found " + numYesQuestions + " yes answers");
+    log.info("initially found {} yes answers", numYesQuestions);
   }
 }

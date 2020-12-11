@@ -8,8 +8,10 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
+@Slf4j
 public class TwoSumPreambleTest {
 
   @Test
@@ -34,7 +36,7 @@ public class TwoSumPreambleTest {
 
       if (Arrays.equals(result, new long[] {0, 0})) {
         invalidNumber = nums[i];
-        System.out.println("first invalid number is " + invalidNumber + " at index " + i);
+        log.info("first invalid number is {} at index {}", invalidNumber, i);
       }
 
       left++;
@@ -66,7 +68,7 @@ public class TwoSumPreambleTest {
 
       if (Arrays.equals(result, new long[] {0, 0})) {
         invalidNumber = nums[i];
-        System.out.println("first invalid number is " + invalidNumber + " at index " + i);
+        log.info("first invalid number is {} at index {}", invalidNumber, i);
       }
 
       left++;
@@ -107,7 +109,7 @@ public class TwoSumPreambleTest {
       }
     }
 
-    System.out.println("found the array at " + left + ", " + right);
+    log.info("found the array at {}, {}", left, right);
     var result = Arrays.copyOfRange(nums, left, right + 1);
 
     long min = Long.MAX_VALUE;
@@ -126,7 +128,7 @@ public class TwoSumPreambleTest {
     }
 
     long sum = min + max;
-    System.out.println("min = " + min + ", max = " + max + ", sum = " + sum);
+    log.info("min = {}, max = {}, sum = {}", min, max, sum);
     assertEquals(183278487, sum);
   }
 }

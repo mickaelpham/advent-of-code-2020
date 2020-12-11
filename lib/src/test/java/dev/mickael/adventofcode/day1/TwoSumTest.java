@@ -8,8 +8,10 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
+@Slf4j
 public class TwoSumTest {
 
   @Test
@@ -35,7 +37,7 @@ public class TwoSumTest {
 
     var result = TwoSum.find(input, target);
     assertEquals(target, (result[0] + result[1]));
-    System.out.println(result[0] + " + " + result[1] + " = " + target);
-    System.out.println(result[0] + " * " + result[1] + " = " + (result[0] * result[1]));
+    log.info("{} + {} = {}", result[0], result[1], result[0] + result[1]);
+    log.info("{} * {} = {}", result[0], result[1], result[0] * result[1]);
   }
 }

@@ -10,8 +10,10 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
+@Slf4j
 public class RevisedPolicyTest {
 
   @Test
@@ -69,6 +71,6 @@ public class RevisedPolicyTest {
                 })
             .collect(Collectors.toList());
 
-    System.out.println("there are " + validPasswords.size() + " valid passwords");
+    log.info("there are {} valid password", validPasswords.size());
   }
 }
