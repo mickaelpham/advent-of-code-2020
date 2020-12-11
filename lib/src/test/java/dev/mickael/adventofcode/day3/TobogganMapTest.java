@@ -10,8 +10,10 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
+@Slf4j
 public class TobogganMapTest {
 
   @Test
@@ -79,7 +81,7 @@ public class TobogganMapTest {
     var numTrees = map.treesEncountered(slope);
 
     assertEquals(228, numTrees);
-    System.out.println("encountered " + numTrees + " trees on the way down");
+    log.info("encountered {} trees on the way down", numTrees);
   }
 
   @Test
@@ -108,6 +110,6 @@ public class TobogganMapTest {
             .reduce(BigInteger.ONE, BigInteger::multiply);
 
     assertEquals(BigInteger.valueOf(6818112000L), numTrees);
-    System.out.println("encountered " + numTrees + " trees across all slopes");
+    log.info("encountered {} trees across all slopes", numTrees);
   }
 }
