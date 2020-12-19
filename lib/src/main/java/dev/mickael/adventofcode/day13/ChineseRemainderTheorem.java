@@ -68,7 +68,7 @@ public class ChineseRemainderTheorem {
      * @return true if x and our remainder are congruent
      */
     public boolean isCongruent(long x) {
-      return x % divisor == remainder;
+      return (x - remainder) % divisor == 0;
     }
 
     @Override
