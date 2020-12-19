@@ -16,7 +16,7 @@ public class ChineseRemainderTheorem {
 
   public long solve() {
     if (constraints.size() < 2) {
-      throw new IllegalStateException("there are less then 2 constraints");
+      throw new IllegalStateException("there are less than 2 constraints");
     }
 
     // sort constraints by their divisors in descending order
