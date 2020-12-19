@@ -79,6 +79,7 @@ public class ShuttleSearchTest {
   @Test
   void findEarliestTimestampWithSynchronizedBus() {
     var schedules = new Integer[] {17, null, 13, 19};
+
     long timestamp = 0;
     boolean inSync = false;
 
